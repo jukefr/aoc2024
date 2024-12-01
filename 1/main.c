@@ -6,7 +6,7 @@
 /*   By: kjullien <kjullien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 21:03:01 by kjullien          #+#    #+#             */
-/*   Updated: 2024/12/01 23:18:44 by kjullien         ###   ########.fr       */
+/*   Updated: 2024/12/01 23:47:05 by kjullien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-int	main(void)
+void	process(t_list *list, int *left, int *right)
 {
-	t_list	*list;
-	t_list	*current;
 	size_t	counter;
-	int		*left;
-	int		*right;
 	int		*extracted;
-	int		total;
+	t_list	*current;
 
-	list = NULL;
-	read_file_to_list("input", &list);
 	current = list;
 	counter = 0;
-	left = malloc(sizeof(int) * list_length(&list));
-	right = malloc(sizeof(int) * list_length(&list));
 	while (counter < list_length(&list))
 	{
 		extracted = get_numbers_from_line(current->content);
@@ -42,6 +34,13 @@ int	main(void)
 	}
 	qsort(left, list_length(&list), sizeof(int), compare);
 	qsort(right, list_length(&list), sizeof(int), compare);
+}
+
+void	part1(t_list *list, int *left, int *right)
+{
+	size_t		counter;
+	long long	total;
+
 	counter = 0;
 	total = 0;
 	while (counter < list_length(&list))
@@ -52,6 +51,43 @@ int	main(void)
 			total += right[counter] - left[counter];
 		counter++;
 	}
-	printf("%i\n", total);
+	printf("[Part 1] %lld\n", total);
+}
+
+void	part2(t_list *list, int *left, int *right)
+{
+	size_t		counter;
+	size_t		counter2;
+	long long	total;
+
+	counter = 0;
+	total = 0;
+	while (counter < list_length(&list))
+	{
+		counter2 = 0;
+		while (counter2 < list_length(&list))
+		{
+			if (left[counter] == right[counter2])
+				total += left[counter];
+			counter2++;
+		}
+		counter++;
+	}
+	printf("[Part 2] %lld\n", total);
+}
+
+int	main(void)
+{
+	t_list	*list;
+	int		*left;
+	int		*right;
+
+	list = NULL;
+	read_file_to_list("input", &list);
+	left = malloc(sizeof(int) * list_length(&list));
+	right = malloc(sizeof(int) * list_length(&list));
+	process(list, left, right);
+	part1(list, left, right);
+	part2(list, left, right);
 	return (0);
 }
