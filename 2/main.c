@@ -6,7 +6,7 @@
 /*   By: kjullien <kjullien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 22:38:52 by kjullien          #+#    #+#             */
-/*   Updated: 2024/12/02 22:59:10 by kjullien         ###   ########.fr       */
+/*   Updated: 2024/12/02 23:32:54 by kjullien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,97 @@ int	check_descending(int numbers[20])
 	return (1);
 }
 
+int	generate_permutations_and_check_ascending(int numbers[20])
+{
+	int	new_numbers[100][20] = {0};
+	int	counter;
+	int	counter2;
+	int	numbers_amount;
+	int	counter3;
+
+	numbers_amount = get_number_amount(numbers);
+	counter = 0;
+	counter2 = 0;
+	counter3 = 0;
+	while (counter < numbers_amount)
+	{
+		counter2 = 0;
+		counter3 = 0;
+		while (counter2 < numbers_amount)
+		{
+			if (counter2 == counter)
+			{
+				counter2++;
+				continue ;
+			}
+			new_numbers[counter][counter3] = numbers[counter2];
+			counter2++;
+			counter3++;
+		}
+		counter++;
+	}
+	counter2 = 0;
+	while (counter2 < numbers_amount)
+	{
+		new_numbers[counter][counter2] = numbers[counter2];
+		counter2++;
+	}
+	counter = 0;
+	while (new_numbers[counter][0])
+	{
+		if (check_ascending(new_numbers[counter]) == 1)
+			return (1);
+		counter++;
+	}
+	return (0);
+}
+
+int	generate_permutations_and_check_descending(int numbers[20])
+{
+	int	new_numbers[100][20] = {0};
+	int	counter;
+	int	counter2;
+	int	numbers_amount;
+	int	counter3;
+
+	numbers_amount = get_number_amount(numbers);
+	counter = 0;
+	counter2 = 0;
+	counter3 = 0;
+	while (counter < numbers_amount)
+	{
+		counter2 = 0;
+		counter3 = 0;
+		while (counter2 < numbers_amount)
+		{
+			if (counter2 == counter)
+			{
+				counter2++;
+				continue ;
+			}
+			new_numbers[counter][counter3] = numbers[counter2];
+			counter2++;
+			counter3++;
+		}
+		counter++;
+	}
+	counter2 = 0;
+	while (counter2 < numbers_amount)
+	{
+		new_numbers[counter][counter2] = numbers[counter2];
+		counter2++;
+	}
+	counter = 0;
+	while (new_numbers[counter][0])
+	{
+		if (check_descending(new_numbers[counter]) == 1)
+			return (1);
+		counter++;
+	}
+	return (0);
+}
+
+
 int	main(void)
 {
 	FILE	*file;
@@ -99,5 +190,14 @@ int	main(void)
 		total += check_descending(numbers2[counter]);
 		counter++;
 	}
-	printf("[Part 1] %i", total);
+	printf("[Part 1] %i\n", total);
+	counter = 0;
+	total = 0;
+	while (counter < 1000)
+	{
+		total += generate_permutations_and_check_ascending(numbers2[counter]);
+		total += generate_permutations_and_check_descending(numbers2[counter]);
+		counter++;
+	}
+	printf("[Part 2] %i\n", total);
 }
